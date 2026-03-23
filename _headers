@@ -1,0 +1,18 @@
+# Cloudflare Pages Headers
+
+# Service Worker sollte nicht gecached werden
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
+
+# JavaScript Module - 5 Min Browser-Cache (SW nutzt Network-First als Fallback)
+/js/*
+  Cache-Control: public, max-age=300
+
+# HTML Dateien - kein Caching
+/*.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/app
+  Cache-Control: no-cache, no-store, must-revalidate

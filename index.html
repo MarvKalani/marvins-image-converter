@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html class="dark" lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<title>Marvins Bildwandler - Datenschutzfreundliche Bildkonvertierung</title>
+	<meta name="description"
+		content="Konvertiere Bilder (WebP, JPG, PNG, SVG) sicher und lokal in deinem Browser. Kein Upload, keine Kosten, 100% Datenschutz." />
+	<meta name="theme-color" content="#4CAF50" />
+	<link rel="manifest" href="./manifest.json" />
+	<link rel="canonical" href="https://img2.download/" />
+	<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "SoftwareApplication",
+			"name": "Marvins Bildwandler",
+			"applicationCategory": "MultimediaApplication",
+			"operatingSystem": "Any",
+			"offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "EUR"
+			},
+			"description": "Konvertiere Bilder (WebP, JPG, PNG, SVG) sicher und lokal in deinem Browser. Kein Upload, keine Kosten, 100% Datenschutz."
+		}
+	</script>
+
+	<!-- Tailwind CSS -->
+	<!-- Tailwind CSS (Local) -->
+	<link rel="stylesheet" href="css/landing.css">
+</head>
+
+<body class="font-display antialiased text-white selection:bg-neon-blue selection:text-black">
+	<div class="fixed inset-0 w-full h-full flex flex-col p-4 md:p-8 main-scroll">
+
+		<!-- Header -->
+		<header class="flex items-center justify-between mb-8 md:mb-0 shrink-0">
+			<a href="https://marvins.app" target="_blank" class="flex items-center gap-3 group">
+				<h2 class="portal-text font-black text-2xl leading-none transition-colors group-hover:text-neon-blue">
+					Marvins<span class="text-neon-teal">.</span>
+				</h2>
+			</a>
+			<div class="flex items-center gap-4">
+				<div class="luminant-glass px-4 py-1.5 rounded-full border-neon-fuchsia/40 border hidden sm:block">
+					<span class="portal-text text-[10px] font-bold text-neon-fuchsia"
+						data-translate="offlineReady">Offline Ready PWA</span>
+				</div>
+
+				<!-- Language Switcher -->
+				<div class="relative group cursor-pointer z-50">
+					<div
+						class="luminant-glass px-3 py-1.5 rounded-full border border-neon-blue/30 flex items-center gap-2 transition-colors hover:bg-white/10">
+						<span id="current-lang-flag" class="text-lg">🇩🇪</span>
+						<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-neon-blue" viewBox="0 0 20 20"
+							fill="currentColor">
+							<path fill-rule="evenodd"
+								d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+								clip-rule="evenodd" />
+						</svg>
+					</div>
+					<!-- Dropdown -->
+					<div
+						class="absolute right-0 top-full w-max bg-void/90 backdrop-blur-xl border border-neon-blue/30 rounded-xl p-2 hidden group-hover:block shadow-[0_0_20px_rgba(0,240,255,0.2)]">
+						<div class="grid grid-cols-1 gap-1" id="lang-options">
+							<!-- Options injected by JS -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<!-- Main Content -->
+		<main class="flex-1 flex flex-col items-center max-w-7xl mx-auto w-full px-4 md:px-8">
+
+			<!-- Hero Section: Focused & Centered -->
+			<div class="flex flex-col items-center w-full py-12 lg:py-24 z-10 text-center">
+
+				<!-- Branding -->
+				<div class="relative space-y-8 z-10 w-full max-w-4xl px-4">
+					<div
+						class="absolute -top-20 left-1/2 -translate-x-1/2 w-80 h-80 bg-neon-blue/10 blur-[120px] rounded-full pointer-events-none">
+					</div>
+
+					<h1 class="text-6xl md:text-9xl font-black italic uppercase leading-[0.8] tracking-tighter">
+						<span data-translate="landingTitle1">MARVINS</span><br />
+						<span
+							class="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-neon-fuchsia to-neon-teal"
+							data-translate="landingTitle2">CONVERTER</span>
+					</h1>
+
+					<p class="portal-text text-base md:text-xl font-medium text-neon-blue/80 max-w-2xl mx-auto leading-relaxed"
+						data-translate="landingSubtitle" data-translate-html>
+						Bilder konvertieren <span
+							class="text-neon-blue font-black italic underline decoration-neon-blue/40 decoration-4 underline-offset-4">OHNE</span>
+						Cloud-Stress. Sicher, lokal und blitzschnell.
+					</p>
+
+					<!-- Main CTA / Dropzone -->
+					<div class="pt-10 flex justify-center">
+						<div class="relative group w-full max-w-xl">
+							<div id="desktop-drop-zone"
+								class="relative h-48 w-full rounded-2xl transition-all duration-500 border-2 border-dashed border-neon-blue/30 bg-white/5 hover:bg-white/10 hover:border-neon-blue flex flex-col items-center justify-center cursor-pointer group-hover:scale-[1.02] shadow-[0_0_50px_rgba(0,240,255,0.05)] hover:shadow-[0_0_80px_rgba(0,240,255,0.1)]"
+								onclick="document.getElementById('landing-file-input').click()">
+								<input type="file" id="landing-file-input" accept="image/*" multiple hidden
+									onchange="handleLandingFiles(this.files)">
+								<div
+									class="p-4 bg-neon-blue/10 rounded-full mb-4 group-hover:scale-110 transition-transform duration-500">
+									<svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-neon-blue" fill="none"
+										viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+											d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+									</svg>
+								</div>
+								<span class="portal-text font-black text-xl text-white tracking-widest uppercase italic"
+									data-translate="dropZoneTitle">Dateien hier ablegen</span>
+								<span
+									class="text-[10px] text-neon-blue/50 mt-2 font-light tracking-widest uppercase hidden lg:block"
+									data-translate="dropZoneSubtitle">oder klicken zum Auswählen</span>
+								<span
+									class="text-[10px] text-neon-blue/50 mt-2 font-light tracking-widest uppercase lg:hidden"
+									data-translate="dropZoneMobile">Oder klicken zum Auswählen</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Divider / Vibe Hook -->
+			<div class="w-full text-center py-12 lg:py-24 z-10 border-t border-white/5">
+				<h2 class="portal-text font-black text-4xl sm:text-6xl italic text-neon-blue drop-shadow-[0_0_20px_rgba(0,240,255,0.4)]"
+					data-translate="vibeIntro">Deine Bilder. 100% Privat. Nichts verlässt Deinen PC</h2>
+			</div>
+
+			<!-- Value Sections -->
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 w-full max-w-6xl mx-auto px-4 z-10 mb-20">
+				<!-- Everyday Use -->
+				<div
+					class="luminant-glass p-8 rounded-2xl border border-neon-fuchsia/20 hover:border-neon-fuchsia/40 transition-all group overflow-hidden relative">
+					<div
+						class="absolute -right-8 -top-8 w-40 h-40 bg-neon-fuchsia/5 blur-[60px] rounded-full group-hover:bg-neon-fuchsia/15 transition-all">
+					</div>
+					<div class="flex items-center gap-4 mb-6 relative z-10">
+						<div class="p-3 bg-neon-fuchsia/10 rounded-2xl group-hover:scale-110 transition-transform">
+							<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-neon-fuchsia" fill="none"
+								viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+							</svg>
+						</div>
+						<h3 class="portal-text text-2xl font-black italic text-neon-fuchsia"
+							data-translate="vibeDailyTitle">Für Deinen Alltag</h3>
+					</div>
+					<p class="text-white/80 text-base md:text-lg leading-relaxed relative z-10"
+						data-translate="vibeDailyText">
+						Bilder zu groß für Messenger oder Social Media? Wir machen sie klein, ohne dass sie matschig
+						werden. Perfekt für Deine Stories.
+					</p>
+				</div>
+
+				<!-- Pro Mode -->
+				<div
+					class="luminant-glass p-8 rounded-2xl border border-neon-teal/20 hover:border-neon-teal/40 transition-all group overflow-hidden relative">
+					<div
+						class="absolute -right-8 -top-8 w-40 h-40 bg-neon-teal/5 blur-[60px] rounded-full group-hover:bg-neon-teal/15 transition-all">
+					</div>
+					<div class="flex items-center gap-4 mb-6 relative z-10">
+						<div class="p-3 bg-neon-teal/10 rounded-2xl group-hover:scale-110 transition-transform">
+							<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-neon-teal" fill="none"
+								viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+							</svg>
+						</div>
+						<h3 class="portal-text text-2xl font-black italic text-neon-teal" data-translate="vibeProTitle">
+							Für Pros & Designer</h3>
+					</div>
+					<p class="text-white/80 text-base md:text-lg leading-relaxed relative z-10"
+						data-translate="vibeProText">
+						Zaubere aus Pixeln scharfe Vektoren (SVG) oder optimiere Deine Website mit WebP. Volle Kontrolle
+						über Qualität.
+					</p>
+				</div>
+			</div>
+
+			<!-- Privacy Emphasized -->
+			<section class="w-full max-w-4xl mx-auto mb-20 px-4 z-10">
+				<div
+					class="luminant-glass p-10 rounded-2xl text-center border-2 border-neon-blue/20 bg-void/40 backdrop-blur-xl relative overflow-hidden group">
+					<div
+						class="absolute -top-24 -left-24 w-80 h-80 bg-neon-blue/5 blur-[120px] rounded-full group-hover:bg-neon-blue/15 transition-all">
+					</div>
+					<h3 class="portal-text text-3xl font-black italic mb-6 text-white relative z-10 underline decoration-neon-blue/30 decoration-8 underline-offset-8"
+						data-translate="vibePrivacyTitle">Safe ist safe</h3>
+					<p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto relative z-10 leading-relaxed font-light"
+						data-translate="vibePrivacyText">
+						Alles passiert nur in Deinem Browser. Deine Bilder landen auf keinem Server. 100% Deine
+						Kontrolle.
+					</p>
+				</div>
+			</section>
+		</main>
+
+		<footer class="mt-auto text-center opacity-70 text-[10px] py-4 lg:py-0">
+			<div class="mb-2 text-neon-blue/80">Version: 24.02.2026 01:25 (v1)</div>
+			<p class="font-light">
+				© 2026 <a href="/" class="hover:text-neon-blue">🏠 Marvin Kalani - Bildwandler</a> |
+				<a href="impressum.html" class="hover:text-neon-fuchsia" data-translate="impressum">Impressum</a> |
+				<a href="datenschutz.html" class="hover:text-neon-teal" data-translate="privacy">Datenschutz</a> |
+				<a href="LICENSE.md" class="hover:text-white" data-translate="licenses">Lizenzen</a>
+			</p>
+		</footer>
+
+		<!-- Mobile Floating CTA (Hidden on Desktop) -->
+		<div class="lg:hidden fixed bottom-20 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[320px]">
+			<div class="block w-full" onclick="document.getElementById('landing-file-input').click()">
+				<button
+					class="w-full relative h-16 rounded-2xl overflow-hidden transition-all active:scale-95 border-2 border-dashed border-neon-blue/50 bg-void/80 backdrop-blur-md">
+					<div class="h-full w-full flex items-center justify-center gap-3 relative z-10">
+						<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-neon-blue" fill="none"
+							viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+								d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+						</svg>
+						<span class="portal-text font-bold text-lg text-white" data-translate="dropZoneMobile">Dateien
+							auswählen</span>
+					</div>
+				</button>
+			</div>
+		</div>
+
+		<!-- Ambient Background Glows -->
+		<div
+			class="fixed top-0 right-0 w-[500px] h-[500px] bg-neon-fuchsia/5 blur-[120px] rounded-full pointer-events-none -z-10">
+		</div>
+		<div
+			class="fixed bottom-0 left-0 w-[500px] h-[500px] bg-neon-blue/5 blur-[120px] rounded-full pointer-events-none -z-10">
+		</div>
+	</div>
+	<script src="js/translations.min.js?v=2602240125" defer></script>
+	<script>
+		// Simple version sync
+		document.addEventListener('DOMContentLoaded', () => {
+			// In a real app we might fetch this from a config or SW
+			const versionEl = document.getElementById('version-display');
+			if (versionEl) versionEl.textContent = '24.02.2026 01:25 (v1)';
+
+			// Initialize Language
+			initLanguage();
+		});
+
+		// --- Translation System ---
+		// translation object loaded from translations.js
+
+		const languageFlags = {
+			de: '🇩🇪', en: '🇬🇧', es: '🇪🇸', fr: '🇫🇷', ar: '🇸🇦', zh: '🇨🇳', ja: '🇯🇵', ko: '🇰🇷', ru: '🇷🇺'
+		};
+
+		function initLanguage() {
+			console.log('[i18n] Initializing language...');
+			const supportedLanguages = Object.keys(translations);
+			let savedLang = localStorage.getItem('selectedLanguage');
+
+			// Validate saved language
+			if (savedLang && !supportedLanguages.includes(savedLang)) {
+				console.log('[i18n] Invalid saved language, clearing:', savedLang);
+				savedLang = null;
+			}
+
+			// Auto-detect if not set or invalid
+			if (!savedLang) {
+				const browserLang = (navigator.language || navigator.userLanguage || 'de').split('-')[0].toLowerCase();
+				console.log('[i18n] Detected browser language:', browserLang);
+				if (supportedLanguages.includes(browserLang)) {
+					currentLanguage = browserLang;
+				} else {
+					currentLanguage = 'de';
+				}
+				localStorage.setItem('selectedLanguage', currentLanguage);
+			} else {
+				currentLanguage = savedLang;
+			}
+
+			console.log('[i18n] Final selected language:', currentLanguage);
+			updateLanguageUI();
+			renderLanguageOptions();
+		}
+
+		function setLanguage(lang) {
+			console.log('Setting language to:', lang);
+			currentLanguage = lang;
+			localStorage.setItem('selectedLanguage', lang);
+			updateLanguageUI();
+		}
+
+		function updateLanguageUI() {
+			const t = translations[currentLanguage] || translations.de;
+			console.log('Updating UI for language:', currentLanguage);
+
+			document.querySelectorAll('[data-translate]').forEach(el => {
+				const key = el.getAttribute('data-translate');
+				if (t[key]) {
+					// Use innerHTML only if explicitly requested, otherwise textContent to be safe
+					if (el.hasAttribute('data-translate-html')) {
+						el.innerHTML = t[key];
+					} else {
+						el.textContent = t[key];
+					}
+				}
+			});
+
+			// SEO Updates
+			if (t.seoTitle) document.title = t.seoTitle;
+			const metaDesc = document.querySelector('meta[name="description"]');
+			if (metaDesc && t.seoDescription) metaDesc.setAttribute('content', t.seoDescription);
+
+			// Update flag display
+			const flagEl = document.getElementById('current-lang-flag');
+			if (flagEl) {
+				flagEl.textContent = languageFlags[currentLanguage] || '🌐';
+			}
+			document.documentElement.lang = currentLanguage;
+		}
+
+		function renderLanguageOptions() {
+			const container = document.getElementById('lang-options');
+			if (!container) return;
+
+			const langs = Object.keys(translations);
+			// Add a few more for visual completeness even if fallback to English isn't perfect here yet
+			// Realistically we should import full translations or keep landing simple. 
+			// For now, listing supported keys.
+
+			container.innerHTML = langs.map(lang => `
+                <div class="px-2 py-1 hover:bg-white/10 rounded cursor-pointer flex items-center gap-2 text-sm" onclick="setLanguage('${lang}')">
+                    <span>${languageFlags[lang]}</span>
+                    <span class="uppercase">${lang}</span>
+                </div>
+            `).join('');
+		}
+
+		// --- File Handling Helper ---
+		async function handleLandingFiles(filesList) {
+			if (!filesList || filesList.length === 0) return;
+
+			const fileObjects = [];
+			for (let i = 0; i < filesList.length; i++) {
+				const file = filesList[i];
+				if (file.type.startsWith('image/')) {
+					fileObjects.push({
+						name: file.name,
+						type: file.type,
+						buffer: await file.arrayBuffer()
+					});
+				}
+			}
+
+			if (fileObjects.length > 0) {
+				storeAndRedirect(fileObjects);
+			}
+		}
+
+		async function storeAndRedirect(fileObjects) {
+			const dbPromise = new Promise((resolve, reject) => {
+				const request = indexedDB.open('bildwandler_share', 1);
+				request.onerror = () => reject(request.error);
+				request.onsuccess = () => resolve(request.result);
+				request.onupgradeneeded = (e) => {
+					const db = e.target.result;
+					if (!db.objectStoreNames.contains('shared_files')) {
+						db.createObjectStore('shared_files', { keyPath: 'id', autoIncrement: true });
+					}
+				};
+			});
+
+			try {
+				const db = await dbPromise;
+				const transaction = db.transaction('shared_files', 'readwrite');
+				const store = transaction.objectStore('shared_files');
+				store.clear();
+				for (const file of fileObjects) {
+					store.add(file);
+				}
+				await new Promise((resolve, reject) => {
+					transaction.oncomplete = resolve;
+					transaction.onerror = reject;
+				});
+				db.close();
+
+				// Cloudflare strips .html in production, but we need it locally
+				const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+				window.location.href = isLocal ? 'app.html' : 'app';
+			} catch (err) {
+				console.error('Error storing files:', err);
+				alert('Fehler beim Laden der Dateien.');
+			}
+		}
+
+		// Global Drag & Drop Handler
+		const body = document.body;
+
+		// Visual feedback for drag
+		body.addEventListener('dragover', (e) => {
+			e.preventDefault();
+			body.classList.add('brightness-125'); // Simple effect
+		});
+
+		body.addEventListener('dragleave', (e) => {
+			e.preventDefault();
+			body.classList.remove('brightness-125');
+		});
+
+		body.addEventListener('drop', async (e) => {
+			e.preventDefault();
+			body.classList.remove('brightness-125');
+
+			const files = e.dataTransfer.files;
+			if (files && files.length > 0) {
+				// Convert files to storable format (matches SW share_target logic)
+				const fileObjects = [];
+				for (let i = 0; i < files.length; i++) {
+					const file = files[i];
+					// Only process images
+					if (file.type.startsWith('image/')) {
+						fileObjects.push({
+							name: file.name,
+							type: file.type,
+							buffer: await file.arrayBuffer()
+						});
+					}
+				}
+
+				if (fileObjects.length > 0) {
+					// Store in IndexedDB (same DB as SW uses)
+					const dbPromise = new Promise((resolve, reject) => {
+						const request = indexedDB.open('bildwandler_share', 1);
+						request.onerror = () => reject(request.error);
+						request.onsuccess = () => resolve(request.result);
+						request.onupgradeneeded = (e) => {
+							const db = e.target.result;
+							if (!db.objectStoreNames.contains('shared_files')) {
+								db.createObjectStore('shared_files', { keyPath: 'id', autoIncrement: true });
+							}
+						};
+					});
+
+					try {
+						const db = await dbPromise;
+						const transaction = db.transaction('shared_files', 'readwrite');
+						const store = transaction.objectStore('shared_files');
+						store.clear(); // Clear old files
+						for (const file of fileObjects) {
+							store.add(file);
+						}
+						await new Promise((resolve, reject) => {
+							transaction.oncomplete = resolve;
+							transaction.onerror = reject;
+						});
+						db.close();
+
+						// Redirect to app
+						window.location.href = 'app';
+
+					} catch (err) {
+						console.error('Error storing files:', err);
+						alert('Fehler beim Laden der Dateien.');
+					}
+				}
+			}
+		});
+		// Service Worker Registration for PWA with force update
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', async () => {
+				try {
+					// Force update: unregister old SW first if needed
+					const registrations = await navigator.serviceWorker.getRegistrations();
+					for (const reg of registrations) {
+						// Check if update is available
+						await reg.update();
+					}
+
+					const registration = await navigator.serviceWorker.register('./sw.js');
+					console.log('ServiceWorker registration successful');
+
+					// Force activate new SW immediately
+					if (registration.waiting) {
+						registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+					}
+
+					registration.addEventListener('updatefound', () => {
+						const newWorker = registration.installing;
+						newWorker.addEventListener('statechange', () => {
+							if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+								newWorker.postMessage({ type: 'SKIP_WAITING' });
+							}
+						});
+					});
+
+					// Reload on controller change
+					let refreshing = false;
+					navigator.serviceWorker.addEventListener('controllerchange', () => {
+						if (!refreshing) {
+							refreshing = true;
+							window.location.reload();
+						}
+					});
+				} catch (err) {
+					console.log('ServiceWorker registration failed:', err);
+				}
+			});
+		}
+	</script>
+</body>
+
+</html>

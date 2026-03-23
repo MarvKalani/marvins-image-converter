@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.zip
+debug-*
+multi-test-*
+test-results/
+playwright-report/
+*.webp
+!img/*.webp
+!icons/*.webp

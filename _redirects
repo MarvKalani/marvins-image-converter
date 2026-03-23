@@ -1,0 +1,30 @@
+# Cloudflare Redirects - Blockiere Test-Dateien und interne Dateien
+# Cloudflare Pages "Pretty URLs" handled /app -> /app.html automatisch
+
+# Spezifische Dateien (Performance-optimiert)
+/run-all-tests.bat /404.html 200
+/run-all-tests.ps1 /404.html 200
+/language-test.js /404.html 200
+/MULTILANG-README.md /404.html 200
+/package.json /404.html 200
+/package-lock.json /404.html 200
+/playwright.config.js /404.html 200
+/cloudflare-build.js /404.html 200
+
+# Wildcard-Regeln (nach spezifischen Regeln)
+/playwright/* /404.html 200
+/playwright-report/* /404.html 200  
+/test-results/* /404.html 200
+/.vscode/* /404.html 200
+/node_modules/* /404.html 200
+
+# Pattern-basierte Regeln
+/*test.js /404.html 200
+/*-test.js /404.html 200
+/TEST-*.md /404.html 200
+/test-*.html /404.html 200
+/STATUS-*.md /404.html 200
+/CLOUDFLARE-*.md /404.html 200
+/debug-* /404.html 200
+/multi-test-* /404.html 200
+/*.zip /404.html 200

@@ -1,0 +1,30 @@
+{
+  "name": "marvins-image-converter",
+  "version": "1.0.0",
+  "description": "Browser-based image converter PWA — runs entirely client-side",
+  "main": "app.html",
+  "scripts": {
+    "start": "npx http-server -p 4200 -c-1",
+    "build:js": "npx --yes terser js/translations.js -c -m -o js/translations.min.js",
+    "build": "npm run build:js && node cloudflare-build.js",
+    "deploy": "node deploy-update-version.js && node cloudflare-build.js"
+  },
+  "keywords": [
+    "image-converter",
+    "image-processing",
+    "pwa",
+    "webp",
+    "avif",
+    "jpeg",
+    "png",
+    "svg",
+    "browser-based",
+    "client-side",
+    "offline"
+  ],
+  "author": "Marvin Kalani",
+  "license": "CC-BY-NC-SA-4.0",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

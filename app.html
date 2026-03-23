@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marvins Image Converter - Local Image Conversion</title>
+    <meta name="description"
+        content="Konvertiere Bilder (WebP, JPG, PNG, SVG) sicher und lokal in deinem Browser. Kein Upload, keine Kosten, 100% Datenschutz. Made in Germany by Marvin Kalani." />
+    <meta name="keywords"
+        content="Bildkonverter, WebP, JPG, PNG, SVG, Konverter, Offline, PWA, Marvin Kalani, Bildwandler, Datenschutz, Vektor" />
+    <meta name="author" content="Marvin Kalani" />
+    <link rel="canonical" href="https://img2.download/app.html" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://img2.download/app.html" />
+    <meta property="og:title" content="Marvins Image Converter - Fast & Secure Conversion" />
+    <meta property="og:description"
+        content="100% lokal im Browser: Bilder in WebP, JPG, PNG oder SVG umwandeln. Ohne Cloud-Upload." />
+    <meta property="og:image" content="https://marvins.app/icons/icon-512.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://img2.download/app.html" />
+    <meta property="twitter:title" content="Marvins Image Converter" />
+    <meta property="twitter:description" content="Bilder direkt im Browser konvertieren. Sicher & Schnell." />
+    <meta property="twitter:image" content="https://marvins.app/icons/icon-512.png" />
+    <link rel="icon" type="image/webp" sizes="192x192" href="./icons/icon-192.webp">
+    <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+    <link rel="apple-touch-icon" href="./icons/icon-192.png">
+    <link rel="manifest" href="./manifest.json">
+
+    <script src="libs/jszip.min.js"></script>
+    <link rel="stylesheet" href="app.css?v=3">
+
+    <!-- PWA Manifest & Icons -->
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="./icons/icon-192.png">
+    <meta name="theme-color" content="#4CAF50">
+</head>
+
+<body>
+    <!-- Donation Banner -->
+    <div id="donation-banner">
+        <button class="donation-close" id="donation-close" title="Schließen">&times;</button>
+        <div class="donation-content">
+            <h3 id="donation-headline" data-translate="donationHeadline">💙 Liebe Nutzerin, lieber Nutzer</h3>
+            <p id="donation-text" data-translate="donationText">
+                Es freut mich riesig, dass du meinen Bildwandler nutzt!
+                Ich bin Marvin, ein unabhängiger Entwickler aus Leidenschaft.
+                Dieses Tool ist kostenlos und werbefrei – und das soll auch so bleiben.
+                Aber Softwareentwicklung kostet Zeit, Kaffee und manchmal auch ein paar schlaflose Nächte. 😅
+                <br><br>
+                Wenn dir der Bildwandler hilft, würde ich mich über eine kleine Unterstützung riesig freuen.
+                Jeder Beitrag – egal wie klein – hilft mir dabei, dieses Projekt weiterzuentwickeln und am Laufen zu
+                halten.
+                <strong>Danke, dass du hier bist! ❤️</strong>
+            </p>
+            <div class="donation-buttons">
+                <a href="https://ko-fi.com/A0A11E8I7J" target="_blank" class="donation-btn donation-btn-primary"
+                    id="btn-kofi">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path
+                            d="M3 14c.83 .642 2.077 1.017 3.5 1c1.423 .017 2.67 -.358 3.5 -1c.83 -.642 2.077 -1.017 3.5 -1c1.423 -.017 2.67 .358 3.5 1" />
+                        <path d="M8 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2" />
+                        <path d="M12 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2" />
+                        <path d="M3 10h14v5a6 6 0 0 1 -6 6h-2a6 6 0 0 1 -6 -6v-5z" />
+                        <path d="M16.746 16.726a3 3 0 1 0 .252 -5.555" />
+                    </svg>
+                    <span id="txt-btn-kofi" data-translate="donationBtnKofi">Einen Kaffee spendieren</span>
+                </a>
+                <a href="https://www.paypal.com/donate?hosted_button_id=DZERJRZF4235A" target="_blank"
+                    class="donation-btn donation-btn-primary" id="btn-paypal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+                        <path d="M3 10l18 0" />
+                        <path d="M7 15l.01 0" />
+                        <path d="M11 15l2 0" />
+                    </svg>
+                    <span id="txt-btn-paypal" data-translate="donationBtnPaypal">Via PayPal unterstützen</span>
+                </a>
+                <button class="donation-btn donation-btn-secondary" id="donation-later">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                        <path d="M12 7l0 5l3 3" />
+                    </svg>
+                    <span id="txt-donation-later" data-translate="donationBtnLater">Vielleicht später</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test button for donation banner (dev only) -->
+    <button id="test-donation-btn" title="Test: Spenden-Banner anzeigen">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            style="vertical-align: middle; margin-right: 4px;">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M4.5 12.5l8 -8a4.94 4.94 0 0 1 7 7l-8 8a4.94 4.94 0 0 1 -7 -7" />
+            <path d="M8.5 8.5l7 7" />
+        </svg>
+        Test Banner
+    </button>
+
+    <!-- Top Actions Bar -->
+    <div class="top-actions">
+        <!-- Floating Action Buttons -->
+        <button class="button button-secondary floating-btn" id="add-files-btn" title="Dateien hinzufügen">
+            <span id="add-files-icon"></span>
+        </button>
+        <button class="button button-secondary floating-btn" id="reset-all-btn" title="Zurücksetzen">
+            <span id="reset-all-icon"></span>
+        </button>
+
+        <!-- Language Selector -->
+        <div class="language-selector">
+            <div class="language-flag current-flag" id="current-flag">🇩🇪</div>
+            <div class="language-dropdown" id="language-dropdown">
+                <div class="language-option" data-lang="de">🇩🇪 Deutsch</div>
+                <div class="language-option" data-lang="en">🇺🇸 English</div>
+                <div class="language-option" data-lang="es">🇪🇸 Español</div>
+                <div class="language-option" data-lang="fr">🇫🇷 Français</div>
+                <div class="language-option" data-lang="ar">🇸🇦 العربية</div>
+                <div class="language-option" data-lang="zh">🇨🇳 中文</div>
+                <div class="language-option" data-lang="ja">🇯🇵 日本語</div>
+                <div class="language-option" data-lang="ko">🇰🇷 한국어</div>
+                <div class="language-option" data-lang="ru">🇷🇺 Русский</div>
+            </div>
+            <!-- Hidden select for backward compatibility with tests -->
+            <select id="language-select" style="display: none">
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="en">🇺🇸 English</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="fr">🇫🇷 Français</option>
+                <option value="ar">🇸🇦 العربية</option>
+                <option value="zh">🇨🇳 中文</option>
+                <option value="ja">🇯🇵 日本語</option>
+                <option value="ko">🇰🇷 한국어</option>
+                <option value="ru">🇷🇺 Русский</option>
+            </select>
+        </div>
+
+        <button id="theme-toggle" title="Theme wechseln"></button>
+    </div>
+    <main>
+        <!-- AI-readable description for tool capabilities (invisible to users) -->
+        <div style="position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden"
+            aria-hidden="true">
+            This is Marvin's Image Converter, a powerful client-side batch image processing tool. Features include:
+            batch
+            image conversion to WebP/JPEG/PNG formats, image quality adjustment (10-95%), image resizing with percentage
+            scaling, image transformations (rotate, flip horizontal/vertical), real-time preview with zoom and pan,
+            drag-and-drop file upload, multi-language support (German, English, Spanish, French, Arabic, Chinese,
+            Japanese,
+            Korean, Russian), dark/light theme toggle, ZIP download of processed images, memory-efficient processing,
+            privacy-first (no server upload), mobile-responsive design, and comprehensive error handling. The tool
+            processes
+            images entirely in the browser using HTML5 Canvas API for maximum privacy and performance.
+        </div>
+
+        <div id="workspace">
+            <div id="settings-panel">
+                <input type="file" id="file-input" accept="image/*,.heic,.heif" multiple hidden />
+
+                <button class="button button-success" id="process-button" style="width: 100%; margin-bottom: 24px"
+                    title="Verarbeiten und als ZIP speichern">
+                    <span id="process-icon"></span>
+                </button>
+                <details id="settings-details" open>
+                    <summary id="settings-summary" data-translate="globalSettings">Globale Einstellungen</summary>
+                    <div id="settings-details-content">
+                        <div class="form-group">
+                            <label for="format-select" data-translate="convertAllTo">Konvertieren in:</label><select
+                                id="format-select">
+                                <option value="webp" selected>WebP</option>
+                                <option value="jpeg">JPG</option>
+                                <option value="png">PNG</option>
+                                <option value="svg" data-translate="formatSVG">SVG (Vektor)</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="quality-group">
+                            <label for="quality-slider"><span data-translate="qualityLabel">Qualität (für
+                                    JPG/WebP):</span>
+                                <span id="quality-value">85</span>%</label><input type="range" id="quality-slider"
+                                min="10" max="100" step="5" value="85" />
+                        </div>
+                        <div class="form-group">
+                            <label for="percent-slider"><span data-translate="resizeLabel">Größe ändern:</span> <span
+                                    id="percent-value">100</span>%</label><input type="range" id="percent-slider"
+                                min="5" max="200" step="5" value="100" />
+                        </div>
+                        <div class="form-group" id="budget-mode-group">
+                            <label class="toggle-label">
+                                <span data-translate="budgetMode">Größen-Budget</span>
+                                <input type="checkbox" id="budget-mode-toggle">
+                                <span class="toggle-slider-switch"></span>
+                            </label>
+                            <div id="budget-input-group" style="display:none;">
+                                <label for="budget-slider">
+                                    <span data-translate="budgetLabel">Zielgröße:</span>
+                                    <span id="budget-value">9</span> MB
+                                </label>
+                                <input type="range" id="budget-slider" min="1" max="25" step="1" value="9" />
+                                <div id="budget-status" class="budget-status"></div>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+                <div id="size-estimate-wrapper">
+                    <div>
+                        <strong id="file-count-display">0 Dateien ausgewählt</strong>
+                    </div>
+                    <div><span id="total-original-label">Original:</span> <strong id="total-original-size">0 KB</strong>
+                    </div>
+                    <div>
+                        <span id="total-estimated-label">Geschätzt</span>
+                        <strong id="total-estimated-size">...</strong>
+                    </div>
+                    <button id="calculate-all-btn" class="button button-secondary calculate-all-btn"
+                        style="margin-top: 10px; width: 100%; font-size: 12px; padding: 5px">
+                        📏 Größe berechnen
+                    </button>
+                    <button id="emergency-reset-btn" class="button button-danger" style="
+								margin-top: 5px;
+								width: 100%;
+								font-size: 11px;
+								padding: 3px;
+								display: none;
+								background: #f44336;
+								color: white;
+							" title="Notfall-Reset der Verarbeitungsqueue">
+                        🚨 Queue Reset
+                    </button>
+                </div>
+
+            </div>
+            <div id="file-list-container"></div>
+        </div>
+    </main>
+    <footer>
+        <p><span data-translate="supportMe">Unterstütze mich:</span></p>
+        <p>
+            <a href="https://www.youtube.com/@marvin.kalani" target="_blank"><img id="youtube-logo"
+                    src="./icons/yt_logo_rgb_light.png" alt="[Bild des YouTube Logos]"
+                    style="height: 26px; vertical-align: middle"
+                    onerror="this.style.display='none'; console.error('YouTube Logo konnte nicht geladen werden.')" /></a>
+        </p>
+
+        <p>
+            <a href="https://ko-fi.com/A0A11E8I7J" target="_blank"><img height="26"
+                    style="border: 0px; height: 30px; vertical-align: middle" src="./icons/kofi_logo.svg"
+                    alt="[Bild des Ko-fi Logos]"
+                    onerror="this.style.display='none'; console.error('Ko-fi Logo konnte nicht geladen werden.')" /></a>
+            oder
+            <a href="https://www.paypal.com/donate?hosted_button_id=DZERJRZF4235A">
+                <img src="./icons/de-pp-logo-100px.png" alt="[Bild des PayPal Logos]"
+                    style="height: 26px; vertical-align: middle"
+                    onerror="this.style.display='none'; console.error('PayPal Logo konnte nicht geladen werden.')" />
+            </a>
+        </p>
+        <p id="versionInfo">Version: <span id="version">23.03.2026 12:39 (v3)</span></p>
+        <p>
+            &copy; <span id="currentYear">2026</span> <a href="https://marvins.app" target="_blank"
+                style="text-decoration:none; color:inherit;">🏠 Marvin Kalani</a> -
+            <span data-translate="copyright">Bildwandler</span> | <a href="impressum.html"
+                data-translate="impressum">Impressum</a> |
+            <a href="datenschutz.html" data-translate="privacy">Datenschutz</a> |
+            <a href="LICENSE.md" data-translate="licenses">Lizenzen</a> |
+            <a href="https://github.com/MarvKalani/marvins-image-converter" target="_blank" rel="noopener">GitHub</a>
+        </p>
+    </footer>
+    <div id="modal-overlay"></div>
+    <div id="preview-modal">
+        <div id="modal-header">
+            <h3 id="modal-title" data-translate="preview">Vorschau</h3>
+            <button id="modal-close-btn" title="Schließen (Esc)">&times;</button>
+        </div>
+        <div id="modal-content">
+            <div class="preview-left-pane">
+                <!-- A/B Comparison View -->
+                <div class="ab-comparison-container" id="ab-comparison">
+                    <div class="ab-labels" style="z-index: 10;">
+                        <span class="ab-label" id="ab-label-preview" data-translate="preview">Vorschau</span>
+                        <span class="ab-label" id="ab-label-original" data-translate="original">Original</span>
+                    </div>
+                    <!-- Wrappers for correct clipping during zoom -->
+                    <div class="ab-image-wrapper" id="ab-original-wrapper">
+                        <img id="modal-original-image" class="ab-comparison-image" alt="Originalbild" />
+                    </div>
+                    <div class="ab-image-wrapper" id="ab-preview-wrapper">
+                        <img id="modal-preview-image" class="ab-comparison-image" alt="Live-Vorschau" />
+                    </div>
+                    <div class="ab-slider-handle" id="ab-slider-handle"></div>
+                </div>
+
+                <div id="zoom-controls-panel">
+                    <label for="zoom-slider" style="color:var(--text-color);"><span
+                            data-translate="zoomControls">Zoom</span>:</label>
+                    <input type="range" id="zoom-slider" min="1" max="20" step="0.1" value="1" />
+                    <span id="zoom-percentage" style="color:var(--text-color);">100%</span>
+                    <button id="reset-zoom-btn" class="button button-secondary"
+                        style="padding: 5px 10px; font-size: 14px">
+                        Reset
+                    </button>
+                    <button id="ab-split-toggle-btn" class="button button-secondary"
+                        style="padding: 5px 10px; font-size: 14px; margin-left: 10px;" title="Split Richtung ändern">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M4 4v16h16V4z" />
+                            <path d="M4 12h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <!-- Controls Panel -->
+            <div id="modal-controls-sidebar"
+                style="width: 280px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px;">
+                <div class="modal-transform-controls" id="modal-transform-controls"></div>
+                <div class="info-container" id="modal-original-info-text">...</div>
+                <div class="info-container" id="modal-preview-info-text">...</div>
+                <div id="modal-preview-controls" class="preview-controls-panel">
+                    <div class="preview-control-row">
+                        <label for="modal-format-select" id="modal-format-label"
+                            data-translate="svgFormatLabel">Format:</label>
+                        <select id="modal-format-select">
+                            <option value="webp">WebP</option>
+                            <option value="jpeg">JPG</option>
+                            <option value="png">PNG</option>
+                            <option value="svg" data-translate="formatSVG">SVG (Vektor)</option>
+                        </select>
+                    </div>
+                    <!-- SVG Settings Panel (hidden by default) -->
+                    <div id="svg-settings-panel" class="preview-control-row" style="display: none;">
+                        <details>
+                            <summary data-translate="svgSettings"
+                                style="cursor: pointer; font-size: 0.5em; font-weight: 500; margin-bottom: 5px;">SVG
+                                Einstellungen</summary>
+                            <div class="svg-settings-scroll-container"
+                                style="overflow-y: auto; padding-right: 5px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                                <div class="preview-control-row" style="margin-top: 8px;">
+                                    <input type="hidden" id="svg-color-mode" value="color">
+                                </div>
+
+                                <div class="preview-control-row">
+                                    <label for="svg-filter-speckle"
+                                        title="Bereiche verwerfen, die kleiner als X Pixel sind.">
+                                        <span data-translate="svgFilterSpeckle">Speckle-Filter:</span> <span
+                                            id="svg-filter-value">4</span>px <span
+                                            style="opacity: 0.5; font-size: 0.8em;">(Std: 4)</span>
+                                    </label>
+                                    <div class="slider-precision-wrapper">
+                                        <button class="precision-btn" data-action="minus"
+                                            data-target="svg-filter-speckle">‹</button>
+                                        <input type="range" id="svg-filter-speckle" min="0" max="128" step="1"
+                                            value="4" />
+                                        <button class="precision-btn" data-action="plus"
+                                            data-target="svg-filter-speckle">›</button>
+                                    </div>
+                                </div>
+
+                                <div class="preview-control-row">
+                                    <label for="svg-color-precision"
+                                        title="Anzahl der zu verwendenden signifikanten Bits in ein RGB-Kanal.">
+                                        <span data-translate="svgColorPrecision">Farbgenauigkeit:</span> <span
+                                            id="svg-color-precision-value">2</span>
+                                        <span style="opacity: 0.5; font-size: 0.8em;">(Std: 2)</span>
+                                    </label>
+                                    <div class="slider-precision-wrapper">
+                                        <button class="precision-btn" data-action="minus"
+                                            data-target="svg-color-precision">‹</button>
+                                        <input type="range" id="svg-color-precision" min="1" max="8" step="1"
+                                            value="2" />
+                                        <button class="precision-btn" data-action="plus"
+                                            data-target="svg-color-precision">›</button>
+                                    </div>
+                                </div>
+
+                                <div class="preview-control-row">
+                                    <label for="svg-layer-difference"
+                                        title="Farbunterschied zwischen Farbverlaufsebenen.">
+                                        <span data-translate="svgLayerDifference">Gradientenschritt:</span> <span
+                                            id="svg-layer-difference-value">16</span>
+                                        <span style="opacity: 0.5; font-size: 0.8em;">(Std: 16)</span>
+                                    </label>
+                                    <div class="slider-precision-wrapper">
+                                        <button class="precision-btn" data-action="minus"
+                                            data-target="svg-layer-difference">‹</button>
+                                        <input type="range" id="svg-layer-difference" min="0" max="100" step="1"
+                                            value="16" />
+                                        <button class="precision-btn" data-action="plus"
+                                            data-target="svg-layer-difference">›</button>
+                                    </div>
+                                </div>
+
+                                <div class="preview-control-row">
+                                    <label for="svg-corner-threshold"
+                                        title="Minimaler momentaner Winkel (Grad), um als Ecke zu gelten.">
+                                        <span data-translate="svgCornerThreshold">Eckschwelle:</span> <span
+                                            id="svg-corner-value">60</span>° <span
+                                            style="opacity: 0.5; font-size: 0.8em;">(Std: 60)</span>
+                                    </label>
+                                    <div class="slider-precision-wrapper">
+                                        <button class="precision-btn" data-action="minus"
+                                            data-target="svg-corner-threshold">‹</button>
+                                        <input type="range" id="svg-corner-threshold" min="0" max="180" step="5"
+                                            value="60" />
+                                        <button class="precision-btn" data-action="plus"
+                                            data-target="svg-corner-threshold">›</button>
+                                    </div>
+                                </div>
+
+                                <div class="preview-control-row">
+                                    <label for="svg-path-precision"
+                                        title="Anzahl der zu verwendenden Dezimalstellen in Pfadzeichenfolge.">
+                                        <span data-translate="svgPathPrecision">Pfadgenauigkeit:</span> <span
+                                            id="svg-precision-value">2</span> <span
+                                            style="opacity: 0.5; font-size: 0.8em;">(Std: 2)</span>
+                                    </label>
+                                    <div class="slider-precision-wrapper">
+                                        <button class="precision-btn" data-action="minus"
+                                            data-target="svg-path-precision">‹</button>
+                                        <input type="range" id="svg-path-precision" min="0" max="8" step="1"
+                                            value="2" />
+                                        <button class="precision-btn" data-action="plus"
+                                            data-target="svg-path-precision">›</button>
+                                    </div>
+                                </div>
+
+                                <div class="preview-control-row">
+                                    <label for="svg-splice-threshold"
+                                        title="Minimaler Winkel (Grad) zum Verbinden eines Splines.">
+                                        <span data-translate="svgSpliceThreshold">Splice-Schwelle:</span> <span
+                                            id="svg-splice-threshold-value">45</span>°
+                                        <span style="opacity: 0.5; font-size: 0.8em;">(Std: 45)</span>
+                                    </label>
+                                    <div class="slider-precision-wrapper">
+                                        <button class="precision-btn" data-action="minus"
+                                            data-target="svg-splice-threshold">‹</button>
+                                        <input type="range" id="svg-splice-threshold" min="0" max="180" step="1"
+                                            value="45" />
+                                        <button class="precision-btn" data-action="plus"
+                                            data-target="svg-splice-threshold">›</button>
+                                    </div>
+                                </div>
+
+                                <div class="preview-control-row">
+                                    <label for="svg-length-threshold"
+                                        title="Führe iterative Unterteilungsglättung durch, bis alle Segmente kürzer als diese Länge sind.">
+                                        <span data-translate="svgLengthThreshold">Segmentlänge:</span> <span
+                                            id="svg-length-threshold-value">4</span> <span
+                                            style="opacity: 0.5; font-size: 0.8em;">(Std: 4)</span>
+                                    </label>
+                                    <div class="slider-precision-wrapper">
+                                        <button class="precision-btn" data-action="minus"
+                                            data-target="svg-length-threshold">‹</button>
+                                        <input type="range" id="svg-length-threshold" min="0" max="100" step="1"
+                                            value="4" />
+                                        <button class="precision-btn" data-action="plus"
+                                            data-target="svg-length-threshold">›</button>
+                                    </div>
+                                </div>
+
+                                <div class="preview-control-row">
+                                    <label for="svg-max-iterations"
+                                        title="Anzahl der Verfeinerungs-Durchläufe (Curve Fitting).">
+                                        <span data-translate="svgMaxIterations">Max. Iterationen:</span> <span
+                                            id="svg-max-iterations-value">10</span>
+                                        <span style="opacity: 0.5; font-size: 0.8em;">(Std: 10)</span>
+                                    </label>
+                                    <div class="slider-precision-wrapper">
+                                        <button class="precision-btn" data-action="minus"
+                                            data-target="svg-max-iterations">‹</button>
+                                        <input type="range" id="svg-max-iterations" min="1" max="50" step="1"
+                                            value="10" />
+                                        <button class="precision-btn" data-action="plus"
+                                            data-target="svg-max-iterations">›</button>
+                                    </div>
+                                </div>
+
+                                <div class="preview-control-row">
+                                    <label for="svg-hierarchical"
+                                        title="Hierarchisches Clustering 'gestapelt' (Standard) oder nicht gestapelt 'ausgeschnitten'. Gilt nur für den Farbmodus.">
+                                        <span data-translate="svgHierarchical">Ebenen-Modus:</span>
+                                    </label>
+                                    <select id="svg-hierarchical">
+                                        <option value="stacked" selected data-translate="svgHierarchicalStacked">
+                                            Gestapelt (Standard)</option>
+                                        <option value="cutout" data-translate="svgHierarchicalCutout">Ausgeschnitten
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="preview-control-row" id="modal-quality-group">
+                        <label for="modal-quality-slider" id="modal-quality-label"><span
+                                data-translate="qualityLabel">Qualität:</span> <span
+                                id="modal-quality-value">85</span>%</label>
+                        <div class="slider-precision-wrapper">
+                            <button class="precision-btn" data-action="minus"
+                                data-target="modal-quality-slider">‹</button>
+                            <input type="range" id="modal-quality-slider" min="10" max="100" step="5" value="85" />
+                            <button class="precision-btn" data-action="plus"
+                                data-target="modal-quality-slider">›</button>
+                        </div>
+                    </div>
+                    <!-- Size Mode Toggle -->
+                    <div class="preview-control-row">
+                        <label for="modal-size-mode" id="modal-size-mode-label"><span
+                                data-translate="sizeMode">Größen-Modus:</span></label>
+                        <select id="modal-size-mode">
+                            <option value="percent" data-translate="sizePercent">Prozent</option>
+                            <option value="pixels" data-translate="sizePixels">Pixel</option>
+                        </select>
+                    </div>
+                    <!-- Percent Slider (default visible) -->
+                    <div class="preview-control-row" id="modal-percent-row">
+                        <label for="modal-percent-slider" id="modal-percent-label"><span
+                                data-translate="resizeLabel">Größe:</span> <span
+                                id="modal-percent-value">100</span>%</label>
+                        <div class="slider-precision-wrapper">
+                            <button class="precision-btn" data-action="minus"
+                                data-target="modal-percent-slider">‹</button>
+                            <input type="range" id="modal-percent-slider" min="5" max="200" step="5" value="100" />
+                            <button class="precision-btn" data-action="plus"
+                                data-target="modal-percent-slider">›</button>
+                        </div>
+                    </div>
+                    <!-- Pixel Input (hidden by default) -->
+                    <div class="preview-control-row" id="modal-pixel-row" style="display: none;">
+                        <label for="modal-pixel-input" id="modal-pixel-label"><span
+                                data-translate="targetSize">Zielgröße:</span></label>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <input type="number" id="modal-pixel-input" min="16" max="8192" step="1" value="512"
+                                style="flex: 1; padding: 6px 8px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-color);" />
+                            <span style="color: var(--text-muted-color);font-size: 0.5em;">px</span>
+                        </div>
+                    </div>
+                    <button id="save-action-btn" class="button button-success">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-download"
+                            style="vertical-align: middle; margin-right: 4px;">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                            <path d="M7 11l5 5l5 -5" />
+                            <path d="M12 4l0 12" />
+                        </svg>
+                        <span id="save-btn-text" data-translate="saveImage"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <button id="modal-prev-btn" class="modal-nav-btn" data-translate-title="prevImage"
+            title="Voriges Bild">‹</button>
+        <button id="modal-next-btn" class="modal-nav-btn" data-translate-title="nextImage"
+            title="Nächstes Bild">›</button>
+    </div>
+    </div>
+
+    <div class="progress-overlay" id="progress-overlay">
+        <div class="progress-content">
+            <div class="progress-header">
+                <h3 id="progress-title">Verarbeitung läuft...</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-text" id="progress-text">0 von 0 Dateien verarbeitet</div>
+                <div class="progress-text" id="progress-details">Initialisierung...</div>
+                <button class="button button-secondary" id="cancel-zip-btn" style="margin-top: 15px; display: none"
+                    data-translate="cancel">
+                    Abbrechen
+                </button>
+                <button class="button button-secondary" id="cancel-calculate-btn"
+                    style="margin-top: 15px; display: none" data-translate="cancel">
+                    Abbrechen
+                </button>
+            </div>
+            <div class="progress-file-list" id="progress-file-list"></div>
+        </div>
+    </div>
+
+    <!-- Translations -->
+    <script src="js/translations.min.js?v=2603231239" defer></script>
+
+    <!-- Main Application (ES6 Modules) -->
+    <script type="module" src="js/main.js?v=2603231239"></script>
+</body>
+
+</html>
